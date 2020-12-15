@@ -1,0 +1,407 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+
+		<link href="/static/data.css" rel="stylesheet">
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.css">
+
+		<!-- jQuery and JS bundle w/ Popper.js -->
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<style>
+			.checked {
+			color: orange;
+			}
+		</style>
+
+	</head>
+	<body style="background-color:lightgrey;font-family: Verdana; font-smooth: always;">
+		<!-- Top navigation -->
+		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: white;">
+			<h1 style="color:blue;margin-left: 0.5em;margin-right: 1em;">CRAWLIO</h1>
+
+			<a class="navbar-brand" href="/">
+				Ejendomme
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarText">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="#">Favoritter</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Portfolio</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Indstillinger</a>
+					</li>
+				</ul>
+				<img src="/static/face.png" height="70px" alt="Avatar" style="border-radius: 50%;">
+			</div>
+		</nav>
+  
+		<!-- Main page -->
+		<div class="main">
+			<h1>{{data['name']}}</h1>
+			<div class="entry">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm">
+							<img src="{{data['img']}}" style="max-height: 200px;">
+						</div>
+						<div class="col-sm" >
+							<div style="color:blue;">
+								<a style="color:black;">Udbudspris</a>
+								{{data['udbudspris']}},-
+							</div>
+							<div style="color:blue;">
+								<a style="color:black;">Udbetaling</a>
+								{{data['udbetaling']}},-
+							</div>
+							<div style="color:blue;">
+								<a style="color:black;">Oprettelsesdato</a>
+								{{data['oprettelsesdato']}}
+							</div>
+							<div style="color:blue;">
+								<a style="color:black;">Boligareal</a>
+								{{data['boligareal']}}
+							</div>
+							<div style="color:blue;">
+								<a style="color:black;">Værelser</a>
+								{{data['værelser']}}
+							</div>
+						</div>
+						<div class="col-sm">
+							<div style="color:blue;">
+								<a style="color:black;">Grundareal</a>
+								{{data['grundareal']}}
+							</div>
+							<div style="color:blue;">
+								<a style="color:black;">Byggeår</a>
+								{{data['byggeår']}}
+							</div>
+							<div style="color:blue;">
+								<a style="color:black;">Energimærke</a>
+								{{data['energimærke']}}
+							</div>
+						</div>
+						<div class="col-sm">
+							<div style="color:blue;">
+								<a style="color:black;">Prisudvikling</a>
+								{{data['prisudvikling']}}%
+							</div>
+							<div style="color:blue;">
+								<a style="color:black;">Befolkningstilvækst</a>
+								{{data['befolkningstilvækst']}}%
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="entry">
+					<h1>Boligen nu</h1>
+					<div class="container">
+						<div class="row">
+							<div class="col-sm" >
+								<div style="color:blue;">
+									<a style="color:black;">Ejere</a>
+									{{data['raw']['boligejer']['ejerlav']['navn']}}
+								</div>
+								<div style="color:blue;">
+									<a style="color:black;">Skødedato</a>
+									{{data['raw']['boligejer']['historik']['oprettet']}}
+								</div>
+								<div style="color:blue;">
+									<a style="color:black;">BBR</a>
+									<form action="/bbr/{{data['name']}}">
+										<input type="submit" value="See" />
+									</form>
+								</div>
+							</div>
+							<div class="col-sm">
+								<div style="color:blue;">
+									<a style="color:black;">Ejendomsværdi</a>
+									Martin goes here
+								</div>
+								<div style="color:blue;">
+									{% if 'dato' in data['solgt'] %}
+									<a style="color:black;">Sidste salgspris - {{data['solgt']['dato']}}</a>
+									{{data['solgt']['pris']}},-
+									{% endif %}
+								</div>
+								<div style="color:blue;">
+									<a style="color:black;">Kvadratmeterpris</a>
+									{{data['kvadratmeterpris']}}
+								</div>
+								<div style="color:blue;">
+									<a style="color:black;">Grundværdi</a>
+									Martin goes here
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="entry">
+					<h1>Boligen nu</h1>
+					<div class="container">
+						<div class="row">
+							<div class="col-sm" >
+								<div class="card">
+									<h2>
+										Sidste salgs data
+									</h2>
+									<div class="card-body">
+										<canvas id="chLine"></canvas>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<div class="card">
+									<h2>
+										Kvadratmeterprisen
+									</h2>
+									<div class="card-body">
+										<canvas id="chLine2"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="entry">
+					<h1>Områdets udvikling</h1>
+					<div class="container">
+						<div class="row">
+							<div class="col-sm" >
+								<div class="card">
+									<h2>
+										Områdets kvadratmeterpris
+									</h2>
+									<div class="card-body">
+										<canvas id="chLine3"></canvas>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<div class="card">
+									<h2>
+										Områdets lejepris udvikling
+									</h2>
+									<div class="card-body">
+										<canvas id="chLine4"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm" >
+								<div class="card">
+									<h2>
+										Befolkningstilvækst
+									</h2>
+									<div class="card-body">
+										<canvas id="chLine5"></canvas>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<div class="card">
+									<h2>
+										Arbejdsudbuddet
+									</h2>
+									<div class="card-body">
+										<canvas id="chLine6"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm" >
+								<div class="card">
+									<h2>
+										Salg i området
+									</h2>
+									<div class="card-body">
+										<canvas id="chLine7"></canvas>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<div class="card">
+									<h2>
+										Boligen ift. tendensen
+									</h2>
+									<!-- Martin goes here -->
+									<div class="card-body">
+										<canvas id="chLine8"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<script>
+			function chart1() {
+				// chart colors
+				var colors = ['#007bff'];
+				var chartData = {
+					labels: JSON.parse({{data["salgs_historik"]["date"]|tojson}}),
+					datasets: [
+						{
+							data: {{data["salgs_historik"]["pris"]}},
+							backgroundColor: 'transparent',
+							borderColor: colors[0],
+							borderWidth: 4,
+							pointBackgroundColor: colors[0]
+						}
+					]
+				};
+
+				var chLine = document.getElementById("chLine");
+				if (chLine) {
+					new Chart(chLine, {
+						type: 'line',
+						data: chartData,
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+									beginAtZero: false
+									}
+								}]
+							},
+							legend: {
+								display: false
+							}
+						}
+					});
+				}
+			}
+			chart1();
+			function chart2() {
+				// chart colors
+				var colors = ['#007bff'];
+				var chartData = {
+					labels: JSON.parse({{data["salgs_historik"]["date"]|tojson}}),
+					datasets: [
+						{
+							data: {{data["salgs_historik"]["prkv"]}},
+							backgroundColor: 'transparent',
+							borderColor: colors[0],
+							borderWidth: 4,
+							pointBackgroundColor: colors[0]
+						}
+					]
+				};
+
+				var chLine = document.getElementById("chLine2");
+				if (chLine) {
+					new Chart(chLine, {
+						type: 'line',
+						data: chartData,
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+									beginAtZero: false
+									}
+								}]
+							},
+							legend: {
+								display: false
+							}
+						}
+					});
+				}
+			}
+			chart2();
+			function chart3() {
+				// chart colors
+				var colors = ['#007bff'];
+				var chartData = {
+					labels: {{data["kommunekvmpris"]["date"]|tojson}},
+					datasets: [
+						{
+							data: {{data["kommunekvmpris"]["prkv"]}},
+							backgroundColor: 'transparent',
+							borderColor: colors[0],
+							borderWidth: 4,
+							pointBackgroundColor: colors[0]
+						}
+					]
+				};
+
+				var chLine = document.getElementById("chLine3");
+				if (chLine) {
+					new Chart(chLine, {
+						type: 'line',
+						data: chartData,
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+									beginAtZero: false
+									}
+								}]
+							},
+							legend: {
+								display: false
+							}
+						}
+					});
+				}
+			}
+			chart3();
+			function chart5() {
+				// chart colors
+				var colors = ['#007bff'];
+				var chartData = {
+					labels: {{data["kommuneflytning"]["date"]|tojson}},
+					datasets: [
+						{
+							data: {{data["kommuneflytning"]["num"]}},
+							backgroundColor: 'transparent',
+							borderColor: colors[0],
+							borderWidth: 4,
+							pointBackgroundColor: colors[0]
+						}
+					]
+				};
+
+				var chLine = document.getElementById("chLine5");
+				if (chLine) {
+					new Chart(chLine, {
+						type: 'line',
+						data: chartData,
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+									beginAtZero: false
+									}
+								}]
+							},
+							legend: {
+								display: false
+							}
+						}
+					});
+				}
+			}
+			chart5();
+			</script>
+		</div>
+	</body>
+</html>
