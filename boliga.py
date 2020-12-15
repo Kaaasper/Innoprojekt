@@ -63,6 +63,7 @@ def scan(url):
 				data["kælderstørrelse"] = m.group(1)
 				#I m^2
 
+		data["brutto"] = str(int(data["pris"])*0.0005)
 		data["salg"] = []
 		for i in soup.find("div", {"class": "col-lg-8 app-print-full-width d-print-block ng-star-inserted"}).find("div").find("div").find("app-real-estate-property-info-history").find("div",{"class":"card-body p-0"}).find("table").find_all("tbody"):
 			for j in i.find_all("tr"):
