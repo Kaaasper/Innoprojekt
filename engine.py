@@ -12,9 +12,9 @@ def kvadratmeterpris(postnummer):
 		with open("boliga_new.json", encoding="utf8") as f:
 			data = json.load(f)
 			for entry in data:
-				if not "grundstørrelse" in entry:
+				if not "boligstørrelse" in entry:
 					continue
-				size = int(entry["grundstørrelse"])
+				size = int(entry["boligstørrelse"])
 				postnum = int(entry["postnummer"])
 				if (postnum == postnummer and size > 0):
 					vals.append(size)
@@ -78,11 +78,11 @@ def overskud(entry):
 	udbetaling = int(entry["udbetaling"])
 	ejerudgift = int(entry["ejerudgift"])
 	brutto = float(entry["brutto"])
-	kvpris = pris/int(entry["grundstørrelse"])
+	kvpris = pris/int(entry["boligstørrelse"])
 	postnummer = int(entry["postnummer"])
 	gennemsnit_kvpris = kvadratmeterpris(postnummer)
 
-	indtægt = gennemsnitsleje(postnummer)(int(entry["grundstørrelse"]))
+	indtægt = gennemsnitsleje(postnummer)(int(entry["boligstørrelse"]))
 	udgifter = ejerudgift+brutto
 
 	overskud = indtægt - udgifter
@@ -101,7 +101,7 @@ def judge(max):
 				continue
 			if int(i["pris"]) > max:
 				continue
-			if i["grundstørrelse"] == "0":
+			if int(i["boligstørrelse"]) <= 0:
 				continue
 
 			i["vurdering"] = overskud(i)
