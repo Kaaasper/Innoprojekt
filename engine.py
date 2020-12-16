@@ -2,8 +2,27 @@ from scipy import stats
 from search import flytningsdata
 import json, requests
 
+kvdpr_cache = {}
 def kvadratmeterpris(postnummer):
-	return 1
+	postnummer = int(postnummer)
+
+	if not str(postnummer) in kvdpr_cache:
+		vals = []
+
+		with open("boliga_new.json", encoding="utf8") as f:
+			data = json.load(f)
+			for entry in data:
+				if not "grundstørrelse" in entry:
+					continue
+				size = int(entry["grundstørrelse"])
+				postnum = int(entry["postnummer"])
+				if (postnum == postnummer and size > 0):
+					vals.append(size)
+
+		kvdpr_cache[str(postnummer)] = sum(vals)/len(vals)
+
+	return kvdpr_cache[str(postnummer)]
+
 
 with open("boligportal.json") as f:
 	boligportal = json.load(f)
@@ -47,7 +66,7 @@ def flytningssats(postnummer):
 		#print(postnummer,kommune[postnummer])
 		#print(flytningsdata(kommune[postnummer]))
 		try:
-			result = flytningsdata(kommune[postnummer])*10
+			result = flytningsdata(kommune[postnummer])
 			#print(kommune[postnummer],result)
 			return result
 		except:
